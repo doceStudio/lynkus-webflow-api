@@ -1,8 +1,6 @@
 const Api = require("./utils/apiFunctions");
-const newFieldObject = require("./functions/newFieldObject");
 const Tools = require("./utils/tools");
 const Cron = require("node-cron");
-const tp = require("timers/promises");
 
 const functions = require("./functions/functions");
 
@@ -61,7 +59,7 @@ const updateJobList = async () => {
   } else {
     console.log(`${Tools.displayTimeStamp()}No job were published.`);
   }
-  
+
   //UPDATE JOBS
   if (webflowJobs.length > 1) {
     const left = await functions.updateJobs(
@@ -69,13 +67,13 @@ const updateJobList = async () => {
       webflowJobs,
       requestsLeft,
       maxRequest
-      );
-      requestsLeft = left;
-    } else {
-      console.log(`${Tools.displayTimeStamp()}No jobs to update`);
-    }
-    //DELETE JOBS
-    await functions.deleteJobs(webflowJobs, jobAffintyJobs);
+    );
+    requestsLeft = left;
+  } else {
+    console.log(`${Tools.displayTimeStamp()}No jobs to update`);
+  }
+  //DELETE JOBS
+  await functions.deleteJobs(webflowJobs, jobAffintyJobs);
 };
 
 const runJob = async () => {
@@ -89,6 +87,6 @@ const runJob = async () => {
   console.log(`-------------------------------------------------------`);
 };
 
-Cron.schedule(" */5 * * * *", runJob); //Every two min
+//Cron.schedule(" */5 * * * *", runJob); //Every two min
+Cron.schedule(" 59 * * * *", runJob); // Every hour
 runJob();
-//Cron.schedule(" 59 * * * *", runJob); // Every hour

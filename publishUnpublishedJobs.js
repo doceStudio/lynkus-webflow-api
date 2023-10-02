@@ -1,3 +1,0 @@
-const publishUnpublishedJobs = (webflowJobs) => {
-    webflowJobsCid
-}
