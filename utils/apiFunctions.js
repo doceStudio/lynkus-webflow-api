@@ -1,5 +1,7 @@
 const Webflow = require("webflow-api");
-const { MerkleJson } = require("merkle-json");
+const {
+  MerkleJson
+} = require("merkle-json");
 const fetchApi = require("./fetchApi");
 require("dotenv").config();
 const {
@@ -76,7 +78,9 @@ const addItem = async (fields) => {
 };
 
 const deleteJobList = async (jobList) => {
-  const body = JSON.stringify({ itemIds: jobList });
+  const body = JSON.stringify({
+    itemIds: jobList
+  });
   const options = {
     method: "DELETE",
     headers: {
@@ -107,6 +111,7 @@ const patchItem = async (fields, webflowItemId) => {
       accept: "application/json",
       "content-type": "application/json",
     },
+
     body: JSON.stringify({
       fields,
     }),
@@ -116,6 +121,7 @@ const patchItem = async (fields, webflowItemId) => {
     const res = await response.json();
     return res;
   } catch (err) {
+    console.log(err);
     return err;
   }
 };

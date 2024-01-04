@@ -20,8 +20,10 @@ const getAllJobs = async () => {
     return;
   }
 };
+
 const updateJobList = async () => {
   const [webflowJobs, jobAffintyJobs] = await getAllJobs(); // Get the jobs
+
 
   //Check data content
   if (!webflowJobs || !jobAffintyJobs) {
@@ -37,8 +39,9 @@ const updateJobList = async () => {
   const webflowJobsId = webflowJobs.map((item) => item.jobid); // Get the jobs id
   const jobAffinityJobsWithHashes = Tools.addJobHashFields(jobAffintyJobs);
 
-  const [...newJobsId] = await functions.addJobs(jobAffintyJobs, webflowJobs);
 
+  const [...newJobsId] = await functions.addJobs(jobAffintyJobs, webflowJobs);
+  
   const wfUnpublishedJobs = [...newJobsId, ...unpublishedItemsCid];
   //PUBLISH UNPUBLISHED ITEMS
   if (wfUnpublishedJobs.length > 0) {

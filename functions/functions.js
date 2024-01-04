@@ -6,6 +6,7 @@ const Api = require("../utils/apiFunctions");
 const addJobs = async (jobAffintyJobs, webflowJobs) => {
   const jobAffinityJobsWithHashes = Tools.addJobHashFields(jobAffintyJobs);
   const webflowJobsId = webflowJobs.map((item) => item.jobid); // Get the jobs id
+
   const filteredJobs = jobAffinityJobsWithHashes.filter((eachJob) => {
     return !webflowJobsId.includes(eachJob.id.toString()); // Filter the new jobs on jobAffinity
   });
@@ -33,6 +34,7 @@ const addJobs = async (jobAffintyJobs, webflowJobs) => {
 };
 
 const deleteJobs = async (webflowJobs, jobAffintyJobs) => {
+  let jobsTorRemove;
   // Find the removed jobs on JobAffinity
   const jobIdsFromJobAffinty = jobAffintyJobs.map(
     (eachJob) => eachJob.id.toString() // Get the jobs ids from jobAffinity
@@ -42,9 +44,9 @@ const deleteJobs = async (webflowJobs, jobAffintyJobs) => {
   const removedJobsIds = webflowJobsId.filter(
     (jobId) => !jobIdsFromJobAffinty.includes(jobId) //Get the webflow jobsid to remove
   );
-  const jobsTorRemove = webflowJobs.filter(
+  if (removedJobsIds) jobsTorRemove = webflowJobs.filter(
     (eachJobOnWebflow) =>
-      removedJobsIds.includes(eachJobOnWebflow.jobid.toString()) // Get the Webflow jobs to remove from their ids
+    removedJobsIds.includes(eachJobOnWebflow.jobid.toString()) // Get the Webflow jobs to remove from their ids
   );
 
   if (jobsTorRemove.length > 0) {
@@ -114,4 +116,8 @@ const updateJobs = async (
   }
 };
 
-module.exports = { deleteJobs, addJobs, updateJobs };
+module.exports = {
+  deleteJobs,
+  addJobs,
+  updateJobs
+};
